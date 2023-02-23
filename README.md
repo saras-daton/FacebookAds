@@ -97,7 +97,7 @@ If you need to exclude any of the models, declare the model names as variables a
 Example:
 ```yaml
 vars:
-SponsoredBrands_AdGroupsReport: False
+Facebook_Adinsights: False
 ```
 
 ## Models
