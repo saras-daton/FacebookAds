@@ -10,11 +10,12 @@ require-dbt-version: [">=1.0.0", "<2.0.0"]
 vars:
   raw_database: "EDM" #equivalent to project_id in BigQuery
   raw_schema: "EDM" #equivalent to dataset in BigQuery
-  currency_conversion_flag: True
+
   get_brandname_from_tablename_flag: True
   brandname_position_in_tablename: 0
   # Example- default_brandname: "Nike"
   default_brandname: "" 
+  
   get_storename_from_tablename_flag: True 
   storename_position_in_tablename: 1
   # Example- default_storename: "US"
@@ -23,7 +24,7 @@ vars:
   Facebook_Adinsights: True
   Facebook_Adinsights_actionvalues: True
 
-
+  currency_conversion_flag: True
   timezone_conversion_flag: False
   raw_table_timezone_offset_hours: {
     "edm-saras.EDM_Daton.Brand_US_AmazonSellerCentral_FlatFileAllOrdersReportbyLastUpdate":7,
