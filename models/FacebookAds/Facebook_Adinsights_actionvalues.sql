@@ -11,7 +11,7 @@
 
 {% if is_incremental() %}
 {%- set max_loaded_query -%}
-SELECT coalesce(MAX({{daton_batch_runtime()}} ) - 2592000000,0) FROM {{ this }}
+SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
 {% endset %}
 
 {%- set max_loaded_results = run_query(max_loaded_query) -%}
@@ -80,12 +80,12 @@ with fbadinsights as (
         account_name,
         ACTIONS,
         {% if target.type=='snowflake' %} 
-        action_values.daton_pre_1d_click as _daton_pre_1d_click,
-        action_values.daton_pre_1d_view as _daton_pre_1d_view,
-        action_values.daton_pre_28d_click as _daton_pre_28d_click,
-        action_values.daton_pre_28d_view as _daton_pre_28d_view,
-        action_values.daton_pre_7d_click as _daton_pre_7d_click,
-        action_values.daton_pre_7d_view as _daton_pre_7d_view,
+        action_values.VALUE:"1d_click"::VARCHAR as "1d_click",
+        action_values.VALUE:"1d_view"::VARCHAR as "1d_view",
+        action_values.VALUE:"28d_click"::VARCHAR as "28d_click",
+        action_values.VALUE:"28d_view"::VARCHAR as "28d_view",
+        action_values.VALUE:"7d_click"::VARCHAR as "7d_click",
+        action_values.VALUE:"7d_view"::VARCHAR as "7d_view",
         ACTION_VALUES.VALUE:action_canvas_component_id::VARCHAR as action_canvas_component_id,
         ACTION_VALUES.VALUE:action_canvas_component_name::VARCHAR as action_canvas_component_name,
         ACTION_VALUES.VALUE:action_carousel_card_id::VARCHAR as action_carousel_card_id,
