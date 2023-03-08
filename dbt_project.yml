@@ -28,6 +28,7 @@ vars:
   currency_conversion_flag: False
   timezone_conversion_flag: False
   raw_table_timezone_offset_hours: {
+    "Facebook.Ads.Brand_UK_Facebook_Adinsights":-7
     }
 
   Facebook_Adinsights: True
