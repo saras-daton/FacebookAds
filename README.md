@@ -26,6 +26,9 @@ Daton Integrations for
 - Facebook Ads 
 - Exchange Rates(Optional, if currency conversion is not required)
 
+*Note:* 
+*Please select 'Do Not Unnest' option while setting up Daton Integrataion*
+
 # Installation & Configuration
 
 ## Installation Instructions
@@ -35,7 +38,7 @@ If you haven't already, you will need to create a packages.yml file in your DBT 
 ```yaml
 packages:
   - package: saras-daton/facebook_ads
-    version: {{1.0.0}}
+    version: 1.0.0
 ```
 
 # Configuration 
@@ -57,7 +60,7 @@ Models will be create unified tables under the schema (<target_schema>_stg_faceb
 models:
   facebook_ads:
     FacebookAds:
-      +schema: custom_schema_name
+      +schema: custom_schema_extension
 
 ```
 
@@ -86,7 +89,7 @@ Example:
 vars:
 timezone_conversion_flag: False
 raw_table_timezone_offset_hours: {
-    "saras_db.staging.Brand_US_Facebook_Adinsights":7
+    "Facebook.Ads.Brand_UK_Facebook_Adinsights":-7
     }
 ```
 
@@ -106,8 +109,8 @@ This package contains models from the Facebook Advertising API which includes re
 
 | **Category**                 | **Model**  | **Description** |
 | ------------------------- | ---------------| ----------------------- |
-|Ad Insights | [Facebook_Adinsights](models/FacebookAds/Facebook_Adinsights.sql)  | A list of portfolios associated with the account |
-|Ad Insights | [Facebook_Adinsights_actionvalues](models/FacebookAds/Facebook_Adinsights_actionvalues.sql)  | A list of campaigns associated with the account |
+|Ad Insights | [Facebook_Adinsights](models/FacebookAds/Facebook_Adinsights.sql)  | AdInsights data |
+|Ad Insights | [Facebook_Adinsights_actionvalues](models/FacebookAds/Facebook_Adinsights_actionvalues.sql)  | AdInsights Action Values data |
 
 
 
@@ -139,6 +142,6 @@ models:
 
 
 ## Resources:
-- Have questions, feedback, or need [help](https://calendly.com/priyanka-vankadaru/30min)? Schedule a call with our data experts or email us at info@sarasanalytics.com.
+- Have questions, feedback, or need [help](https://calendly.com/srinivas-janipalli/30min)? Schedule a call with our data experts or email us at info@sarasanalytics.com.
 - Learn more about Daton [here](https://sarasanalytics.com/daton/).
 - Refer [this](https://youtu.be/6zDTbM6OUcs) to know more about how to create a dbt account & connect to {{Bigquery/Snowflake}}
