@@ -1,0 +1,21 @@
+
+version: 2
+
+models:
+    - name: Facebook_Adinsights
+      description: "A starter dbt model"
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['date_start']
+        unique_key: ['date_start', 'ad_id']
+
+    - name: Facebook_Adinsights_actionvalues
+      description: "A starter dbt model"
+      config:
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['date_start']
+        unique_key: ['date_start', 'ad_id', 'action_type']

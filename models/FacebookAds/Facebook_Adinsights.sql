@@ -1,22 +1,17 @@
--- depends_on: {{ ref('ExchangeRates') }}
-
-{% if var('table_partition_flag') %}
-{{config(
-    materialized='incremental',
-    incremental_strategy='merge',
-    partition_by = { 'field': 'date_start', 'data_type': 'date' },
-    cluster_by = ['date_start'],
-    unique_key = ['date_start', 'ad_id'])}}
+{% if var('Facebook_Adinsights') %}
+    {{ config( enabled = True ) }}
 {% else %}
-{{config(
-    materialized='incremental',
-    incremental_strategy='merge',
-    unique_key = ['date_start', 'ad_id'])}}
+    {{ config( enabled = False ) }}
 {% endif %}
+
+{% if var('currency_conversion_flag') %}
+-- depends_on: {{ ref('ExchangeRates') }}
+{% endif %}
+
 
 {% if is_incremental() %}
 {%- set max_loaded_query -%}
-SELECT coalesce(MAX({{daton_batch_runtime()}} ) - 2592000000,0) FROM {{ this }}
+SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
 {% endset %}
 
 {%- set max_loaded_results = run_query(max_loaded_query) -%}
@@ -28,37 +23,41 @@ SELECT coalesce(MAX({{daton_batch_runtime()}} ) - 2592000000,0) FROM {{ this }}
 {%- endif -%}
 {% endif %}
 
-with fbadinsights as (
+
 {% set table_name_query %}
 {{set_table_name('%facebookads%adinsights')}}    
 {% endset %}  
 
 
-
 {% set results = run_query(table_name_query) %}
-
 {% if execute %}
-{# Return the first column #}
-{% set results_list = results.columns[0].values() %}
+    {# Return the first column #}
+    {% set results_list = results.columns[0].values() %}
+    {% set tables_lowercase_list = results.columns[1].values() %}
 {% else %}
-{% set results_list = [] %}
+    {% set results_list = [] %}
+    {% set tables_lowercase_list = [] %}
 {% endif %}
 
-{% if var('timezone_conversion_flag') %}
-    {% set hr = var('timezone_conversion_hours') %}
-{% endif %}
 
+with fbadinsights as (
 {% for i in results_list %}
-    {% if var('brand_consolidation_flag') %}
-        {% set brand =i.split('.')[2].split('_')[var('brand_name_position')] %}
+    {% if var('get_brandname_from_tablename_flag') %}
+        {% set brand =i.split('.')[2].split('_')[var('brandname_position_in_tablename')] %}
     {% else %}
-        {% set brand = var('brand_name') %}
+        {% set brand = var('default_brandname') %}
     {% endif %}
 
-    {% if var('store_consolidation_flag') %}
-        {% set store =i.split('.')[2].split('_')[var('store_name_position')] %}
+    {% if var('get_storename_from_tablename_flag') %}
+        {% set store =i.split('.')[2].split('_')[var('storename_position_in_tablename')] %}
     {% else %}
-        {% set store = var('store') %}
+        {% set store = var('default_storename') %}
+    {% endif %}
+
+    {% if var('timezone_conversion_flag') and i.lower() in tables_lowercase_list %}
+        {% set hr = var('raw_table_timezone_offset_hours')[i] %}
+    {% else %}
+        {% set hr = 0 %}
     {% endif %}
 
     SELECT * 
@@ -66,14 +65,15 @@ with fbadinsights as (
         select
         '{{brand}}' as brand,
         '{{store}}' as store,
+        a.* {{ exclude() }} (_daton_user_id, _daton_batch_runtime, _daton_batch_id, _last_updated, _run_id),
         {% if var('currency_conversion_flag') %}
             case when c.value is null then 1 else c.value end as exchange_currency_rate,
             case when c.from_currency_code is null then account_currency else c.from_currency_code end as exchange_currency_code,
         {% else %}
             cast(1 as decimal) as exchange_currency_rate,
-            cast(null as string) as exchange_currency_code, 
+            cast(account_currency as string) as exchange_currency_code, 
         {% endif %}
-        a.* from (
+        a._daton_user_id, a._daton_batch_runtime, a._daton_batch_id, a._last_updated, a._run_id from (
         select 
         account_currency,
         account_id,
@@ -110,24 +110,11 @@ with fbadinsights as (
         unique_ctr,
         unique_inline_link_click_ctr,
         unique_inline_link_clicks,
-        {{daton_user_id()}},
-        {{daton_batch_runtime()}},
-        {{daton_batch_id()}},
-        {% if var('timezone_conversion_flag') %}
-            DATETIME_ADD(cast(date_start as timestamp), INTERVAL {{hr}} HOUR ) as effective_start_date,
-            null as effective_end_date,
-            DATETIME_ADD(current_timestamp(), INTERVAL {{hr}} HOUR ) as last_updated,
-            null as run_id,
-        {% else %}
-            {% if var('snowflake_database_flag') %}
-                CAST(date_start as timestamp) as effective_start_date,
-            {% else %}
-                CAST(date(date_start) as timestamp) as effective_start_date,
-            {% endif %}
-            null as effective_end_date,
-            current_timestamp() as last_updated,
-            null as run_id,
-        {% endif %}
+        {{daton_user_id()}} as _daton_user_id,
+        {{daton_batch_runtime()}} as _daton_batch_runtime,
+        {{daton_batch_id()}} as _daton_batch_id,
+        current_timestamp() as _last_updated,
+        '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id,
         ROW_NUMBER() OVER (PARTITION BY ad_id,date_start order by {{daton_batch_runtime()}} desc) row_num
             from {{i}}
                 {% if is_incremental() %}
