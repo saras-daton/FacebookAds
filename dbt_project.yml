@@ -8,9 +8,9 @@ config-version: 2
 require-dbt-version: [">=1.0.0", "<2.0.0"]
 
 vars:
-  raw_database: "Facebook" #equivalent to project_id in BigQuery
+  raw_database: "Shopify" #equivalent to project_id in BigQuery
     # Example Database name
-  raw_schema: "Ads" #equivalent to dataset in BigQuery
+  raw_schema: "Daton" #equivalent to dataset in BigQuery
     # Example Schema name
 
   get_brandname_from_tablename_flag: True
@@ -31,8 +31,10 @@ vars:
     "Facebook.Ads.Brand_UK_Facebook_Adinsights":-7
     }
 
-  Facebook_Adinsights: True
-  Facebook_Adinsights_actionvalues: True
+  FacebookAdinsights: True
+  FacebookAdinsightsActionValues: True
+  FacebookAdinsightsConversions: True
+  FacebookAdinsightsConversionValues: True
 
   
 # These configurations specify where dbt should look for different types of files.
@@ -54,4 +56,4 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   facebook_ads:
     FacebookAds:
-      +schema: stg_facebook
+      +schema: stg_facebookads

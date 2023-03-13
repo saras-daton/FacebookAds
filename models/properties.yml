@@ -2,7 +2,7 @@
 version: 2
 
 models:
-    - name: Facebook_Adinsights
+    - name: FacebookAdinsights
       description: "A starter dbt model"
       config: 
         materialized: 'incremental'
@@ -11,11 +11,30 @@ models:
         cluster_by: ['date_start']
         unique_key: ['date_start', 'ad_id']
 
-    - name: Facebook_Adinsights_actionvalues
+    - name: FacebookAdinsightsActionValues
       description: "A starter dbt model"
       config:
         materialized: 'incremental'
         incremental_strategy: 'merge'
         partition_by: { 'field': 'date_start', 'data_type': 'date' }
         cluster_by: ['date_start']
-        unique_key: ['date_start', 'ad_id', 'action_type']
+        unique_key: ['date_start', 'ad_id', 'action_values_action_type']
+
+    - name: FacebookAdinsightsConversions
+      description: A report of ad conversions.
+      config:
+        materialized: incremental
+        incremental_strategy: merge
+        unique_key: ['date_start', 'ad_id', 'conversions_action_type']
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['date_start']
+
+    - name: FacebookAdinsightsConversionValues
+      description: A report of ad conversions.
+      config:
+        materialized: incremental
+        incremental_strategy: merge
+        unique_key: ['date_start', 'ad_id', 'conversion_values_action_type']
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['date_start']
+
