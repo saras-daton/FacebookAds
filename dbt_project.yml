@@ -35,7 +35,16 @@ vars:
   FacebookAdinsightsActionValues: True
   FacebookAdinsightsConversions: True
   FacebookAdinsightsConversionValues: True
-
+  FacebookAdsByCountry: True
+  FacebookAdsByProductId: True
+  FacebookAdsByRegion: True
+  FacebookAdsByGender: True
+  FacebookAdsByGenderAge: True
+  FacebookAdsByDevicePlatform: True
+  FacebookAdsByPublisherPlatform: True
+  FacebookAdsByPlatformPosition: True
+  FacebookCampaigns: True
+  FacebookAdcreatives: True
   
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be

@@ -38,3 +38,92 @@ models:
         partition_by: { 'field': 'date_start', 'data_type': 'date' }
         cluster_by: ['date_start']
 
+  - name: FacebookAdCreatives
+    description: Format which provides layout and contains content for the ad.
+    config:
+      materialized: incremental
+      incremental_strategy: merge
+      unique_key: ['effective_object_story_id','name']
+      cluster_by: ['effective_object_story_id']
+
+    - name: FacebookAdsByCountry
+      description: Breakdowns in Ads Manager can be used to see the age of your audience, where they are viewing your ads, what devices they are using, and much more.
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['ad_id','country']
+        unique_key: ['ad_id','date_start','country']
+
+    - name: FacebookAdsByDevicePlatform
+      description: "A starter dbt model"
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['ad_id','device_platform']
+        unique_key: ['ad_id','date_start','device_platform']
+
+    - name: FacebookAdsByGender
+      description: "A starter dbt model"
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['ad_id','gender']
+        unique_key: ['ad_id','date_start','gender']
+
+    - name: FacebookAdsByGenderAge
+      description: "A starter dbt model"
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['ad_id','gender','age']
+        unique_key: ['ad_id','date_start','gender','age']
+
+    - name: FacebookAdsByProductId
+      description: "A starter dbt model"
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['ad_id','product_id']
+        unique_key: ['ad_id','date_start','product_id']
+
+    - name: FacebookAdsByPublisherPlatform
+      description: "A starter dbt model"
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['ad_id','publisher_platform']
+        unique_key: ['ad_id','date_start','publisher_platform']
+
+    - name: FacebookAdsByPlatformPosition
+      description: "A starter dbt model"
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['ad_id','publisher_platform','platform_position']
+        unique_key: ['ad_id','date_start','publisher_platform','platform_position']
+
+    - name: FacebookAdsByRegion
+      description: "A starter dbt model"
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'date_start', 'data_type': 'date' }
+        cluster_by: ['ad_id','region']
+        unique_key: ['ad_id','date_start','region']
+
+    - name: FacebookCampaigns
+      description: "A starter dbt model"
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'start_time', 'data_type': 'timestamp', 'granularity': 'day' }
+        cluster_by: ['campaign_id']
+        unique_key: ['campaign_id']
+
