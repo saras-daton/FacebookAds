@@ -3,7 +3,7 @@ version: 2
 
 models:
     - name: FacebookAdinsights
-      description: "A starter dbt model"
+      description: A report with Ad Insights
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
@@ -12,7 +12,7 @@ models:
         unique_key: ['date_start', 'ad_id']
 
     - name: FacebookAdinsightsActionValues
-      description: "A starter dbt model"
+      description: A report with Ad Insights on basis of action values
       config:
         materialized: 'incremental'
         incremental_strategy: 'merge'
@@ -21,7 +21,7 @@ models:
         unique_key: ['date_start', 'ad_id', 'action_values_action_type']
 
     - name: FacebookAdinsightsConversions
-      description: A report of ad conversions.
+      description: A report with Ad Insights on basis of conversions
       config:
         materialized: incremental
         incremental_strategy: merge
@@ -30,7 +30,7 @@ models:
         cluster_by: ['date_start']
 
     - name: FacebookAdinsightsConversionValues
-      description: A report of ad conversions.
+      description: A report with Ad Insights on basis of conversion values
       config:
         materialized: incremental
         incremental_strategy: merge
@@ -47,7 +47,7 @@ models:
       cluster_by: ['effective_object_story_id']
 
     - name: FacebookAdsByCountry
-      description: Breakdowns in Ads Manager can be used to see the age of your audience, where they are viewing your ads, what devices they are using, and much more.
+      description: A report with Ad Insights on basis of Country.
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
@@ -56,7 +56,7 @@ models:
         unique_key: ['ad_id','date_start','country']
 
     - name: FacebookAdsByDevicePlatform
-      description: "A starter dbt model"
+      description: A report with Ad Insights on basis of Device Platform.
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
@@ -65,7 +65,7 @@ models:
         unique_key: ['ad_id','date_start','device_platform']
 
     - name: FacebookAdsByGender
-      description: "A starter dbt model"
+      description: A report with Ad Insights on basis of Gender.
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
@@ -74,7 +74,7 @@ models:
         unique_key: ['ad_id','date_start','gender']
 
     - name: FacebookAdsByGenderAge
-      description: "A starter dbt model"
+      description: A report with Ad Insights on basis of Gender and Age.
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
@@ -83,7 +83,7 @@ models:
         unique_key: ['ad_id','date_start','gender','age']
 
     - name: FacebookAdsByProductId
-      description: "A starter dbt model"
+      description: A report with Ad Insights on basis of Product ID.
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
@@ -92,7 +92,7 @@ models:
         unique_key: ['ad_id','date_start','product_id']
 
     - name: FacebookAdsByPublisherPlatform
-      description: "A starter dbt model"
+      description: A report with Ad Insights on basis of Publisher Platform.
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
@@ -101,7 +101,7 @@ models:
         unique_key: ['ad_id','date_start','publisher_platform']
 
     - name: FacebookAdsByPlatformPosition
-      description: "A starter dbt model"
+      description: A report with Ad Insights on basis of Publisher Platform and Platform Position.
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
@@ -110,7 +110,7 @@ models:
         unique_key: ['ad_id','date_start','publisher_platform','platform_position']
 
     - name: FacebookAdsByRegion
-      description: "A starter dbt model"
+      description: A report with Ad Insights on basis of Region.
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
@@ -119,7 +119,7 @@ models:
         unique_key: ['ad_id','date_start','region']
 
     - name: FacebookCampaigns
-      description: "A starter dbt model"
+      description: A report with Campaign Details.
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
