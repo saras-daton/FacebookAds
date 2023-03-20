@@ -38,13 +38,13 @@ models:
         partition_by: { 'field': 'date_start', 'data_type': 'date' }
         cluster_by: ['date_start']
 
-  - name: FacebookAdCreatives
-    description: Format which provides layout and contains content for the ad.
-    config:
-      materialized: incremental
-      incremental_strategy: merge
-      unique_key: ['effective_object_story_id','name']
-      cluster_by: ['effective_object_story_id']
+    - name: FacebookAdCreatives
+      description: Format which provides layout and contains content for the ad.
+      config:
+        materialized: incremental
+        incremental_strategy: merge
+        unique_key: ['effective_object_story_id','name']
+        cluster_by: ['effective_object_story_id']
 
     - name: FacebookAdsByCountry
       description: A report with Ad Insights on basis of Country.
