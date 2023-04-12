@@ -38,7 +38,7 @@ If you haven't already, you will need to create a packages.yml file in your DBT 
 ```yaml
 packages:
   - package: saras-daton/FacebookAds
-    version: v1.1.1
+    version: v1.1.2
 ```
 
 # Configuration 
