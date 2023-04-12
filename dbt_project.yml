@@ -63,6 +63,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 
 models:
-  facebook_ads:
+  FacebookAds:
     FacebookAds:
       +schema: stg_facebookads
