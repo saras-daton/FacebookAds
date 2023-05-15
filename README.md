@@ -29,18 +29,6 @@ Daton Integrations for
 *Note:* 
 *Please select 'Do Not Unnest' option while setting up Daton Integrataion*
 
-# Installation & Configuration
-
-## Installation Instructions
-
-If you haven't already, you will need to create a packages.yml file in your DBT project. Include this in your `packages.yml` file
-
-```yaml
-packages:
-  - package: saras-daton/FacebookAds
-    version: v1.1.2
-```
-
 # Configuration 
 
 ## Required Variables
