@@ -2,6 +2,15 @@
 version: 2
 
 models:
+    - name: FacebookAds
+      description: A report with list of ads
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'created_time', 'data_type': 'timestamp', 'granularity': 'day' }
+        cluster_by: ['ad_id']
+        unique_key: ['ad_id','created_time']
+
     - name: FacebookAdinsights
       description: A report with Ad Insights
       config: 

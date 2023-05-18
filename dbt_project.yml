@@ -31,6 +31,7 @@ vars:
     "Facebook.Ads.Brand_UK_Facebook_Adinsights":-7
     }
 
+  FacebookAds: True
   FacebookAdinsights: True
   FacebookAdinsightsActionValues: True
   FacebookAdinsightsConversions: True

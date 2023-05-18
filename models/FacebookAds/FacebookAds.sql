@@ -1,4 +1,4 @@
-{% if var('FacebookAdsByCountry') %}
+{% if var('FacebookAds') %}
 {{ config( enabled = True ) }}
 {% else %}
 {{ config( enabled = False ) }}

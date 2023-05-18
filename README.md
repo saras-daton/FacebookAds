@@ -97,6 +97,7 @@ This package contains models from the Facebook Advertising API which includes re
 
 | **Category**                 | **Model**  | **Description** |
 | ------------------------- | ---------------| ----------------------- |
+|Ad Insights | [FacebookAds](models/FacebookAds/FacebookAds.sql)  | A report with list of Ads. |
 |Ad Insights | [FacebookAdinsights](models/FacebookAds/FacebookAdinsights.sql)  | A report with Ad Insights. |
 |Ad Insights | [FacebookAdinsightsActionValues](models/FacebookAds/FacebookAdinsightsActionValues.sql)  | A report with Ad Insights on basis of action values. |
 |Ad Insights | [FacebookAdinsightsConversions](models/FacebookAds/FacebookAdinsightsConversions.sql)  | A report with Ad Insights on basis of conversions. |
@@ -120,6 +121,15 @@ This package contains models from the Facebook Advertising API which includes re
 version: 2
 
 models:
+    - name: FacebookAds
+      description: A report with list of ads
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'created_time', 'data_type': 'timestamp', 'granularity': 'day' }
+        cluster_by: ['ad_id']
+        unique_key: ['ad_id','created_time']
+
     - name: FacebookAdinsights
       description: A report with Ad Insights
       config: 
