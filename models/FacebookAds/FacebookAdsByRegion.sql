@@ -55,7 +55,8 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
     {% else %}
         {% set hr = 0 %}
     {% endif %}
-
+    SELECT *, 
+    ROW_NUMBER() OVER (PARTITION BY ad_id,date_start,region order by _daton_batch_runtime desc) _seq_id FROM (
     SELECT * {{exclude()}} (row_num)
     FROM (
         select 
@@ -135,6 +136,6 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
                 {% endif %}
         )
         where row_num = 1
-
+    )
     {% if not loop.last %} union all {% endif %}
 {% endfor %}
