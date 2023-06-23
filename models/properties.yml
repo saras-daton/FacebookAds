@@ -125,7 +125,7 @@ models:
         incremental_strategy: 'merge'
         partition_by: { 'field': 'date_start', 'data_type': 'date' }
         cluster_by: ['ad_id','region']
-        unique_key: ['ad_id','date_start','region']
+        unique_key: ['ad_id','date_start','region','_seq_id']
 
     - name: FacebookCampaigns
       description: A report with Campaign Details.
