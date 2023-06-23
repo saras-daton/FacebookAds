@@ -111,6 +111,7 @@ This package contains models from the Facebook Advertising API which includes re
 |Ad Insights | [FacebookAdsByPlatformPosition](models/FacebookAds/FacebookAdsByPlatformPosition.sql)  | A report with Ad Insights on basis of Publisher Platform and Platform Position. |
 |Ad Insights | [FacebookAdsByRegion](models/FacebookAds/FacebookAdsByRegion.sql)  | A report with Ad Insights on basis of Region. |
 |Ad Insights | [FacebookCampaigns](models/FacebookAds/FacebookCampaigns.sql)  | A report with Campaign Details. |
+|Ad Insights | [FacebookAds](models/FacebookAds/FacebookAds.sql)  | A report with Ad Creative Details. |
 
 
 
@@ -120,6 +121,15 @@ This package contains models from the Facebook Advertising API which includes re
 version: 2
 
 models:
+    - name: FacebookAds
+      description: A report with Ad Insights
+      config: 
+        materialized: 'incremental'
+        incremental_strategy: 'merge'
+        partition_by: { 'field': 'created_time', 'data_type': 'timestamp', 'granularity': 'day' }
+        cluster_by: ['ad_id']
+        unique_key: ['ad_id']
+
     - name: FacebookAdinsights
       description: A report with Ad Insights
       config: 
