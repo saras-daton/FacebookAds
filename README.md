@@ -77,6 +77,7 @@ vars:
 timezone_conversion_flag: False
 raw_table_timezone_offset_hours: {
     "Facebook.Ads.Brand_UK_Facebook_Adinsights":-7
+
     }
 ```
 Here, -7 represents the offset hours between UTC and PDT considering we are sitting in PDT timezone and want the data in this timezone
@@ -95,23 +96,23 @@ Facebook_Adinsights: False
 
 This package contains models from the Facebook Advertising API which includes reports on {{sales, margin, inventory, product}}. The primary outputs of this package are described below.
 
-| **Category**                 | **Model**  | **Description** |
-| ------------------------- | ---------------| ----------------------- |
-|Ad Insights | [FacebookAdinsights](models/FacebookAds/FacebookAdinsights.sql)  | A report with Ad Insights. |
-|Ad Insights | [FacebookAdinsightsActionValues](models/FacebookAds/FacebookAdinsightsActionValues.sql)  | A report with Ad Insights on basis of action values. |
-|Ad Insights | [FacebookAdinsightsConversions](models/FacebookAds/FacebookAdinsightsConversions.sql)  | A report with Ad Insights on basis of conversions. |
-|Ad Insights | [FacebookAdinsightsConversionValues](models/FacebookAds/FacebookAdinsightsConversionValues.sql)  | A report with Ad Insights on basis of conversion values. |
-|Ad Insights | [FacebookAdCreatives](models/FacebookAds/FacebookAdCreatives.sql)  | Format which provides layout and contains content for the ad. |
-|Ad Insights | [FacebookAdsByCountry](models/FacebookAds/FacebookAdsByCountry.sql)  | A report with Ad Insights on basis of countries. |
-|Ad Insights | [FacebookAdsByDevicePlatform](models/FacebookAds/FacebookAdsByDevicePlatform.sql)  | A report with Ad Insights on basis of Device Platform. |
-|Ad Insights | [FacebookAdsByGender](models/FacebookAds/FacebookAdsByGender.sql)  | A report with Ad Insights on basis of Gender. |
-|Ad Insights | [FacebookAdsByGenderAge](models/FacebookAds/FacebookAdsByGenderAge.sql)  | A report with Ad Insights on basis of Gender and Age. |
-|Ad Insights | [FacebookAdsByProductId](models/FacebookAds/FacebookAdsByProductId.sql)  | A report with Ad Insights on basis of Product ID. |
-|Ad Insights | [FacebookAdsByPublisherPlatform](models/FacebookAds/FacebookAdsByPublisherPlatform.sql)  | A report with Ad Insights on basis of Publisher Platform. |
-|Ad Insights | [FacebookAdsByPlatformPosition](models/FacebookAds/FacebookAdsByPlatformPosition.sql)  | A report with Ad Insights on basis of Publisher Platform and Platform Position. |
-|Ad Insights | [FacebookAdsByRegion](models/FacebookAds/FacebookAdsByRegion.sql)  | A report with Ad Insights on basis of Region. |
-|Ad Insights | [FacebookCampaigns](models/FacebookAds/FacebookCampaigns.sql)  | A report with Campaign Details. |
-|Ad Insights | [FacebookAds](models/FacebookAds/FacebookAds.sql)  | A report with Ad Creative Details. |
+| **Category**                 | **Model**  | **Description** | **Unique Key** | **Partition Key** | **Cluster Key** |
+| ------------------------- | ---------------| ----------------------- | ------------------- | ---------------- | ------------------- |
+|Ad Insights | [FacebookAdinsights](models/FacebookAds/FacebookAdinsights.sql)  | A report with Ad Insights. | date_start, ad_id | field: date_start, data_type: date | date_start |
+|Ad Insights | [FacebookAdinsightsActionValues](models/FacebookAds/FacebookAdinsightsActionValues.sql)  | A report with Ad Insights on basis of action values. | date_start, ad_id, action_values_action_type | field: date_start, data_type: date | date_start |
+|Ad Insights | [FacebookAdinsightsConversions](models/FacebookAds/FacebookAdinsightsConversions.sql)  | A report with Ad Insights on basis of conversions. | date_start, ad_id, conversions_action_type | field: date_start, data_type: date | date_start |
+|Ad Insights | [FacebookAdinsightsConversionValues](models/FacebookAds/FacebookAdinsightsConversionValues.sql)  | A report with Ad Insights on basis of conversion values. | date_start, ad_id, conversion_values_action_type | field: date_start, data_type: date | date_start |
+|Ad Insights | [FacebookAdCreatives](models/FacebookAds/FacebookAdCreatives.sql)  | Format which provides layout and contains content for the ad. | effective_object_story_id,name | | effective_object_story_id
+|Ad Insights | [FacebookAdsByCountry](models/FacebookAds/FacebookAdsByCountry.sql)  | A report with Ad Insights on basis of countries. | ad_id,date_start,country | field: date_start, data_type: date | ad_id,country |
+|Ad Insights | [FacebookAdsByDevicePlatform](models/FacebookAds/FacebookAdsByDevicePlatform.sql)  | A report with Ad Insights on basis of Device Platform. | ad_id,date_start,device_platform | field: date_start, data_type: date | ad_id,device_platform |
+|Ad Insights | [FacebookAdsByGender](models/FacebookAds/FacebookAdsByGender.sql)  | A report with Ad Insights on basis of Gender. | ad_id,date_start,gender | field: date_start, data_type: date | ad_id,gender |
+|Ad Insights | [FacebookAdsByGenderAge](models/FacebookAds/FacebookAdsByGenderAge.sql)  | A report with Ad Insights on basis of Gender and Age. | ad_id,date_start,gender,age | field: date_start, data_type: date | ad_id,gender,age |
+|Ad Insights | [FacebookAdsByProductId](models/FacebookAds/FacebookAdsByProductId.sql)  | A report with Ad Insights on basis of Product ID. | ad_id,date_start,product_id | field: date_start, data_type: date | ad_id,product_id |
+|Ad Insights | [FacebookAdsByPublisherPlatform](models/FacebookAds/FacebookAdsByPublisherPlatform.sql)  | A report with Ad Insights on basis of Publisher Platform. |ad_id,date_start,publisher_platform | field: date_start, data_type: date | ad_id,publisher_platform |
+|Ad Insights | [FacebookAdsByPlatformPosition](models/FacebookAds/FacebookAdsByPlatformPosition.sql)  | A report with Ad Insights on basis of Publisher Platform and Platform Position. | ad_id,date_start,publisher_platform,platform_position | field: date_start, data_type: date | ad_id,publisher_platform,platform_position |
+|Ad Insights | [FacebookAdsByRegion](models/FacebookAds/FacebookAdsByRegion.sql)  | A report with Ad Insights on basis of Region. | ad_id,date_start,region | field: date_start, data_type: date | ad_id,region |
+|Ad Insights | [FacebookCampaigns](models/FacebookAds/FacebookCampaigns.sql)  | A report with Campaign Details. | campaign_id |  field: start_time, data_type: timestamp, granularity: day  | campaign_id |
+|Ad Insights | [FacebookAds](models/FacebookAds/FacebookAds.sql)  | A report with Ad Creative Details. | ad_id |  field: created_time, data_type: timestamp, granularity: day  | ad_id |
 
 
 
