@@ -76,7 +76,21 @@ Example:
 vars:
 timezone_conversion_flag: False
 raw_table_timezone_offset_hours: {
-    "Facebook.Ads.Brand_UK_Facebook_Adinsights":-7
+    "Facebook.Ads.Brand_UK_Facebook_AdCreatives":-7,
+    "Facebook.Ads.Brand_UK_Facebook_Adinsights":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdinsightsActionValues":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdinsightsConversionValues":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdinsightsConversions":-7,
+    "Facebook.Ads.Brand_UK_Facebook_Ads":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdsByCountry":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdsByDevicePlatform":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdsByGender":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdsByGenderAge":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdsByPlatformPosition":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdsByProductId":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdsByPublisherPlatform":-7,
+    "Facebook.Ads.Brand_UK_Facebook_AdsByRegion":-7,
+    "Facebook.Ads.Brand_UK_Facebook_Campaigns":-7,
 
     }
 ```
