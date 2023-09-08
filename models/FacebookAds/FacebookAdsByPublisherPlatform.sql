@@ -64,8 +64,8 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         account_currency,
         account_id,
         account_name,
-        actions,
-        action_values,
+        --actions,
+        --action_values,
         coalesce(ad_id,'') as ad_id,
         ad_name,
         adset_id,
@@ -73,13 +73,13 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         buying_type,
         campaign_id,
         campaign_name,
-        clicks,
+        CAST(clicks as INT64) as clicks
         cost_per_inline_link_click,
         cost_per_inline_post_engagement,
         cost_per_unique_click,
         cost_per_unique_inline_link_click,
-        conversion_values,
-        conversions,
+        --conversion_values,
+        --conversions,
         cpc,
         cpm,
         cpp,
@@ -87,25 +87,92 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         CAST(date_start as DATE) date_start,
         CAST(date_stop as DATE) date_stop,
         frequency,
-        impressions,
-        inline_link_clicks,
+        CAST(impressions as INT64) as impressions,
+        CAST(inline_link_clicks as INT64) as inline_link_clicks,
         inline_post_engagement,
         objective,
         reach,
         spend,
-        unique_clicks,
+        CAST(unique_clicks as INT64) as unique_clicks,
         unique_ctr,
         unique_inline_link_click_ctr,
-        unique_inline_link_clicks,
-        video_30_sec_watched_actions,
-        video_p25_watched_actions,
-        video_p50_watched_actions,
-        video_p75_watched_actions,
-        video_p95_watched_actions,
-        video_p100_watched_actions,
-        video_avg_time_watched_actions,
-        video_play_actions,
-        website_ctr,
+        CAST(unique_inline_link_clicks as INT64) as unique_inline_link_clicks,
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_30_sec_watched_actions.VALUE:action_type,'') as video_30_sec_watched_actions_action_type,
+        video_30_sec_watched_actions.VALUE:value as video_30_sec_watched_actions_value,
+        {% else %}
+        video_30_sec_watched_actions.action_type as video_30_sec_watched_actions_action_type,
+        video_30_sec_watched_actions.value as video_30_sec_watched_actions_value,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_p25_watched_actions.VALUE:action_type,'') as video_p25_watched_actions_action_type,
+        video_p25_watched_actions.VALUE:value as video_p25_watched_actions_value,
+        {% else %}
+        video_p25_watched_actions.action_type as video_p25_watched_actions_action_type,
+        video_p25_watched_actions.value as video_p25_watched_actions_value,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_p50_watched_actions.VALUE:action_type,'') as video_p50_watched_actions_action_type,
+        video_p50_watched_actions.VALUE:value as video_p50_watched_actions_value,
+        {% else %}
+        video_p50_watched_actions.action_type as video_p50_watched_actions_action_type,
+        video_p50_watched_actions.value as video_p50_watched_actions_value,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_p75_watched_actions.VALUE:action_type,'') as video_p75_watched_actions_action_type,
+        video_p75_watched_actions.VALUE:value as video_p75_watched_actions_value,
+        {% else %}
+        video_p75_watched_actions.action_type as video_p75_watched_actions_action_type,
+        video_p75_watched_actions.value as video_p75_watched_actions_value,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_p95_watched_actions.VALUE:action_type,'') as video_p95_watched_actions_action_type,
+        video_p95_watched_actions.VALUE:value as video_p95_watched_actions_value,
+        {% else %}
+        video_p95_watched_actions.action_type as video_p95_watched_actions_action_type,
+        video_p95_watched_actions.value as video_p95_watched_actions_value,
+        {% endif %}
+        
+        {% if target.type =='snowflake' %}
+        coalesce(video_p100_watched_actions.VALUE:action_type,'') as video_p100_watched_actions_action_type,
+        video_p100_watched_actions.VALUE:value as video_p100_watched_actions_value,
+        {% else %}
+        video_p100_watched_actions.action_type as video_p100_watched_actions_action_type,
+        video_p100_watched_actions.value as video_p100_watched_actions_value,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_avg_time_watched_actions.VALUE:action_type,'') as video_avg_time_watched_actions_action_type,
+        video_avg_time_watched_actions.VALUE:value as video_avg_time_watched_actions_value,
+        {% else %}
+        video_avg_time_watched_actions.action_type as video_avg_time_watched_actions_action_type,
+        video_avg_time_watched_actions.value as video_avg_time_watched_actions_value,
+        {% endif %}
+
+        
+        {% if target.type =='snowflake' %}
+        coalesce(video_play_actions.VALUE:action_type,'') as video_play_actions_action_type,
+        video_play_actions.VALUE:value as video_play_actions_value,
+        video_play_actions.VALUE:_d_view as video_play_actions_d_view,
+        {% else %}
+        video_play_actions.action_type as video_play_actions_action_type,
+        video_play_actions.value as video_play_actions_value,
+        video_play_actions._d_view as video_play_actions_d_view,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(website_ctr.VALUE:action_type,'') as website_ctr_action_type,
+        website_ctr.VALUE:value as website_ctr_value,
+        {% else %}
+        website_ctr.action_type as website_ctr_action_type,
+        website_ctr.value as website_ctr_value,
+        {% endif %}
+
         publisher_platform,
         {% if var('currency_conversion_flag') %}
             case when c.value is null then 1 else c.value end as exchange_currency_rate,

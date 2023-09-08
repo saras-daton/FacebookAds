@@ -64,8 +64,8 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         account_currency,
         account_id,
         account_name,
-        actions,
-        action_values,
+        --actions,
+        --action_values,
         coalesce(ad_id,'') as ad_id,
         ad_name,
         adset_id,
@@ -74,14 +74,14 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         campaign_id,
         campaign_name,
         canvas_avg_view_percent,
-        clicks,
+        CAST(clicks as INT64) as clicks,
         cost_per_estimated_ad_recallers,
         cost_per_inline_link_click,
         cost_per_inline_post_engagement,
         cost_per_unique_click,
         cost_per_unique_inline_link_click,
-        conversion_values,
-        conversions,
+        --conversion_values,
+        --conversions,
         cpc,
         cpm,
         cpp,
@@ -91,29 +91,142 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         estimated_ad_recall_rate,
         estimated_ad_recallers,
         frequency,
-        impressions,
-        inline_link_clicks,
+        CAST(impressions as INT64) as impressions,
+        CAST(inline_link_clicks as INT64) as inline_link_clicks,
         inline_post_engagement,
         objective,
         product_id,
-        converted_product_quantity,
-        converted_product_value,
+        --converted_product_quantity,
+        --converted_product_value,
         reach,
         social_spend,
         spend,
-        unique_clicks,
+        CAST(unique_clicks as INT64) as unique_clicks,
         unique_ctr,
         unique_inline_link_click_ctr,
-        unique_inline_link_clicks,
-        video_30_sec_watched_actions,
-        video_p25_watched_actions,
-        video_p50_watched_actions,
-        video_p75_watched_actions,
-        video_p95_watched_actions,
-        video_p100_watched_actions,
-        video_avg_time_watched_actions,
-        video_play_actions,
-        website_ctr,
+        CAST(unique_inline_link_clicks as INT64) as unique_inline_link_clicks,
+        
+        {% if target.type =='snowflake' %}
+        coalesce(video_30_sec_watched_actions.VALUE:action_type,'') as video_30_sec_watched_actions_action_type,
+        video_30_sec_watched_actions.VALUE:value as video_30_sec_watched_actions_value,
+        {% else %}
+        video_30_sec_watched_actions.action_type as video_30_sec_watched_actions_action_type,
+        video_30_sec_watched_actions.value as video_30_sec_watched_actions_value,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_p25_watched_actions.VALUE:action_type,'') as video_p25_watched_actions_action_type,
+        video_p25_watched_actions.VALUE:value as video_p25_watched_actions_value,
+        {% else %}
+        video_p25_watched_actions.action_type as video_p25_watched_actions_action_type,
+        video_p25_watched_actions.value as video_p25_watched_actions_value,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_p50_watched_actions.VALUE:action_type,'') as video_p50_watched_actions_action_type,
+        video_p50_watched_actions.VALUE:value as video_p50_watched_actions_value,
+        {% else %}
+        video_p50_watched_actions.action_type as video_p50_watched_actions_action_type,
+        video_p50_watched_actions.value as video_p50_watched_actions_value,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_p75_watched_actions.VALUE:action_type,'') as video_p75_watched_actions_action_type,
+        video_p75_watched_actions.VALUE:value as video_p75_watched_actions_value,
+        {% else %}
+        video_p75_watched_actions.action_type as video_p75_watched_actions_action_type,
+        video_p75_watched_actions.value as video_p75_watched_actions_value,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_p95_watched_actions.VALUE:action_type,'') as video_p95_watched_actions_action_type,
+        video_p95_watched_actions.VALUE:value as video_p95_watched_actions_value,
+        {% else %}
+        video_p95_watched_actions.action_type as video_p95_watched_actions_action_type,
+        video_p95_watched_actions.value as video_p95_watched_actions_value,
+        {% endif %}
+        
+        {% if target.type =='snowflake' %}
+        coalesce(video_p100_watched_actions.VALUE:action_type,'') as video_p100_watched_actions_action_type,
+        video_p100_watched_actions.VALUE:value as video_p100_watched_actions_value,
+        {% else %}
+        video_p100_watched_actions.action_type as video_p100_watched_actions_action_type,
+        video_p100_watched_actions.value as video_p100_watched_actions_value,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        coalesce(video_avg_time_watched_actions.VALUE:action_type,'') as video_avg_time_watched_actions_action_type,
+        video_avg_time_watched_actions.VALUE:value as video_avg_time_watched_actions_value,
+        {% else %}
+        video_avg_time_watched_actions.action_type as video_avg_time_watched_actions_action_type,
+        video_avg_time_watched_actions.value as video_avg_time_watched_actions_value,
+        {% endif %}
+
+        
+        {% if target.type =='snowflake' %}
+        coalesce(video_play_actions.VALUE:action_type,'') as video_play_actions_action_type,
+        video_play_actions.VALUE:value as video_play_actions_value,
+        video_play_actions.VALUE:_d_view as video_play_actions_d_view,
+        {% else %}
+        video_play_actions.action_type as video_play_actions_action_type,
+        video_play_actions.value as video_play_actions_value,
+        video_play_actions._d_view as video_play_actions_d_view,
+        {% endif %}
+
+        {% if target.type =='snowflake' %}
+        website_ctr.VALUE:"1d_click"::VARCHAR as website_ctr_1d_click,
+        website_ctr.VALUE:"1d_view"::VARCHAR as website_ctr_1d_view,
+        website_ctr.VALUE:"7d_click"::VARCHAR as website_ctr_7d_click,
+        website_ctr.VALUE:"7d_view"::VARCHAR as website_ctr_7d_view,
+        website_ctr.VALUE:"28d_click"::VARCHAR as website_ctr_28d_click,
+        website_ctr.VALUE:"28d_view"::VARCHAR as website_ctr_28d_view,
+        website_ctr.VALUE:action_canvas_component_id::VARCHAR as website_ctr_action_canvas_component_id,
+        website_ctr.VALUE:action_canvas_component_name::VARCHAR as website_ctr_action_canvas_component_name,
+        website_ctr.VALUE:action_carousel_card_id::VARCHAR as website_ctr_action_carousel_card_id,
+        website_ctr.VALUE:action_carousel_card_name::VARCHAR as website_ctr_action_carousel_card_name,
+        website_ctr.VALUE:action_destination::VARCHAR as website_ctr_action_destination,
+        website_ctr.VALUE:action_device::VARCHAR as website_ctr_action_device,
+        website_ctr.VALUE:action_event_channel::VARCHAR as website_ctr_action_event_channel,
+        website_ctr.VALUE:action_link_click_destination::VARCHAR as website_ctr_action_link_click_destination,
+        website_ctr.VALUE:action_location_code::VARCHAR as website_ctr_action_location_code,
+        website_ctr.VALUE:action_reaction::VARCHAR as website_ctr_action_reaction,
+        website_ctr.VALUE:action_target_id::VARCHAR as website_ctr_action_target_id,
+        coalesce(website_ctr.VALUE:action_type::VARCHAR,'') as website_ctr_action_type,
+        website_ctr.VALUE:action_video_asset_id::VARCHAR as website_ctr_action_video_asset_id,
+        website_ctr.VALUE:action_video_sound::VARCHAR as website_ctr_action_video_sound,
+        website_ctr.VALUE:action_video_type::VARCHAR as website_ctr_action_video_type,
+        website_ctr.VALUE:inline::VARCHAR as website_ctr_inline,
+        website_ctr.VALUE:value::VARCHAR as website_ctr_value,
+        website_ctr.VALUE:id::VARCHAR as website_ctr_id,
+        {% else %}
+        website_ctr._daton_pre_1d_click as website_ctr_1d_click,
+        website_ctr._daton_pre_1d_view as website_ctr_1d_view,
+        website_ctr._daton_pre_7d_click as website_ctr_7d_click,
+        website_ctr._daton_pre_7d_view as website_ctr_7d_view,
+        website_ctr._daton_pre_28d_click as website_ctr_28d_click,
+        website_ctr._daton_pre_28d_view as website_ctr_28d_view,
+        website_ctr.action_canvas_component_id as website_ctr_action_canvas_component_id,
+        website_ctr.action_canvas_component_name as website_ctr_action_canvas_component_name,
+        website_ctr.action_carousel_card_id as website_ctr_action_carousel_card_id,
+        website_ctr.action_carousel_card_name as website_ctr_action_carousel_card_name,
+        website_ctr.action_destination as website_ctr_action_destination,
+        website_ctr.action_device as website_ctr_action_device,
+        website_ctr.action_event_channel as website_ctr_action_event_channel,
+        website_ctr.action_link_click_destination as website_ctr_action_link_click_destination,
+        website_ctr.action_location_code as website_ctr_action_location_code,
+        website_ctr.action_reaction as website_ctr_action_reaction,
+        website_ctr.action_target_id as website_ctr_action_target_id,
+        website_ctr.action_type as website_ctr_action_type,
+        website_ctr.action_video_asset_id as website_ctr_action_video_asset_id,
+        website_ctr.action_video_sound as website_ctr_action_video_sound,
+        website_ctr.action_video_type as website_ctr_action_video_type,
+        website_ctr.inline as website_ctr_inline,
+        website_ctr.value as website_ctr_value,
+        website_ctr.id as website_ctr_id,
+        {% endif %}
+
+
+       
         {% if var('currency_conversion_flag') %}
             case when c.value is null then 1 else c.value end as exchange_currency_rate,
             case when c.from_currency_code is null then account_currency else c.from_currency_code end as exchange_currency_code,
@@ -128,6 +241,15 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id,
         DENSE_RANK() OVER (PARTITION BY ad_id,date_start,product_id order by a.{{daton_batch_runtime()}} desc) row_num
         FROM  {{i}} a
+                {{unnesting("video_30_sec_watched_actions")}}
+                {{unnesting("video_p25_watched_actions")}}
+                {{unnesting("video_p50_watched_actions")}}
+                {{unnesting("video_p75_watched_actions")}}
+                {{unnesting("video_p95_watched_actions")}}
+                {{unnesting("video_p100_watched_actions")}}
+                {{unnesting("video_avg_time_watched_actions")}}
+                {{unnesting("video_play_actions")}}
+                {{unnesting("website_ctr")}}
                 {% if var('currency_conversion_flag') %}
                     left join {{ref('ExchangeRates')}} c on date(date_start) = c.date and account_currency = c.to_currency_code
                 {% endif %}
