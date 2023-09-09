@@ -67,14 +67,14 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         account_name,
         --actions,
         --action_values,
-        coalesce(ad_id,'') as ad_id,
+        coalesce(ad_id,'NA') as ad_id,
         ad_name,
         adset_id,
         adset_name,
         buying_type,
         campaign_id,
         campaign_name,
-        device_platform,
+        coalesce(device_platform,'NA') device_platform,
         canvas_avg_view_percent,
         CAST(clicks as INT64) clicks,
         cost_per_estimated_ad_recallers,
@@ -88,7 +88,7 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         cpm,
         cpp,
         ctr,
-        CAST(date_start as DATE) date_start,
+        coalesce(CAST(date_start as DATE),'NA') date_start,
         CAST(date_stop as DATE) date_stop,
         estimated_ad_recall_rate,
         estimated_ad_recallers,
@@ -105,124 +105,55 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         unique_inline_link_click_ctr,
         CAST(unique_inline_link_clicks as INT64) unique_inline_link_clicks,
 
-         {% if target.type =='snowflake' %}
-        video_30_sec_watched_actions.VALUE:action_type as video_30_sec_watched_actions_action_type,
-        video_30_sec_watched_actions.VALUE:value as video_30_sec_watched_actions_value,
-        {% else %}
-        video_30_sec_watched_actions.action_type as video_30_sec_watched_actions_action_type,
-        video_30_sec_watched_actions.values as video_30_sec_watched_actions_value,
-        {% endif %}
+        {{extract_nested_value("video_30_sec_watched_actions","action_type","string")}} as video_30_sec_watched_actions_action_type,
+        {{extract_nested_value("video_30_sec_watched_actions","value","string")}} as video_30_sec_watched_actions_value,
+    
+        {{extract_nested_value("video_p25_watched_actions","action_type","string")}} as video_p25_watched_actions_action_type,
+        {{extract_nested_value("video_p25_watched_actions","value","string")}} as video_p25_watched_actions_value,
+       
+        {{extract_nested_value("video_p50_watched_actions","action_type","string")}} as video_p50_watched_actions_action_type,
+        {{extract_nested_value("video_p50_watched_actions","value","string")}} as video_p50_watched_actions_value,
+    
+        {{extract_nested_value("video_p75_watched_actions","action_type","string")}} as video_p75_watched_actions_action_type,
+        {{extract_nested_value("video_p75_watched_actions","value","string")}} as video_p75_watched_actions_value,
+       
+        {{extract_nested_value("video_p95_watched_actions","action_type","string")}} as video_p95_watched_actions_action_type,
+        {{extract_nested_value("video_p95_watched_actions","value","string")}} as video_p95_watched_actions_value,
+    
+        {{extract_nested_value("video_p100_watched_actions","action_type","string")}} as video_p100_watched_actions_action_type,
+        {{extract_nested_value("video_p100_watched_actions","value","string")}} as video_p100_watched_actions_value,
+       
+        {{extract_nested_value("video_avg_time_watched_actions","action_type","string")}} as video_avg_time_watched_actions_action_type,
+        {{extract_nested_value("video_avg_time_watched_actions","value","string")}} as video_avg_time_watched_actions_value,
+       
+        {{extract_nested_value("video_play_actions","action_type","string")}} as video_play_actions_action_type,
+        {{extract_nested_value("video_play_actions","value","string")}} as video_play_actions_value,
+        {{extract_nested_value("video_play_actions","_d_view","string")}} as video_play_actions_d_view,
 
-        {% if target.type =='snowflake' %}
-        video_p25_watched_actions.VALUE:action_type as video_p25_watched_actions_action_type,
-        video_p25_watched_actions.VALUE:value as video_p25_watched_actions_value,
-        {% else %}
-        video_p25_watched_actions.action_type as video_p25_watched_actions_action_type,
-        video_p25_watched_actions.values as video_p25_watched_actions_value,
-        {% endif %}
-
-        {% if target.type =='snowflake' %}
-        video_p50_watched_actions.VALUE:action_type as video_p50_watched_actions_action_type,
-        video_p50_watched_actions.VALUE:value as video_p50_watched_actions_value,
-        {% else %}
-        video_p50_watched_actions.action_type as video_p50_watched_actions_action_type,
-        video_p50_watched_actions.values as video_p50_watched_actions_value,
-        {% endif %}
-
-        {% if target.type =='snowflake' %}
-        video_p75_watched_actions.VALUE:action_type as video_p75_watched_actions_action_type,
-        video_p75_watched_actions.VALUE:value as video_p75_watched_actions_value,
-        {% else %}
-        video_p75_watched_actions.action_type as video_p75_watched_actions_action_type,
-        video_p75_watched_actions.values as video_p75_watched_actions_value,
-        {% endif %}
-
-        {% if target.type =='snowflake' %}
-        video_p95_watched_actions.VALUE:action_type as video_p95_watched_actions_action_type,
-        video_p95_watched_actions.VALUE:value as video_p95_watched_actions_value,
-        {% else %}
-        video_p95_watched_actions.action_type as video_p95_watched_actions_action_type,
-        video_p95_watched_actions.values as video_p95_watched_actions_value,
-        {% endif %}
-        
-        {% if target.type =='snowflake' %}
-        video_p100_watched_actions.VALUE:action_type as video_p100_watched_actions_action_type,
-        video_p100_watched_actions.VALUE:value as video_p100_watched_actions_value,
-        {% else %}
-        video_p100_watched_actions.action_type as video_p100_watched_actions_action_type,
-        video_p100_watched_actions.values as video_p100_watched_actions_value,
-        {% endif %}
-
-        {% if target.type =='snowflake' %}
-        video_avg_time_watched_actions.VALUE:action_type as video_avg_time_watched_actions_action_type,
-        video_avg_time_watched_actions.VALUE:value as video_avg_time_watched_actions_value,
-        {% else %}
-        video_avg_time_watched_actions.action_type as video_avg_time_watched_actions_action_type,
-        video_avg_time_watched_actions.values as video_avg_time_watched_actions_value,
-        {% endif %}
-
-        
-        {% if target.type =='snowflake' %}
-        video_play_actions.VALUE:action_type as video_play_actions_action_type,
-        video_play_actions.VALUE:value as video_play_actions_value,
-        video_play_actions.VALUE:_d_view as video_play_actions_d_view,
-        {% else %}
-        video_play_actions.action_type as video_play_actions_action_type,
-        video_play_actions.values as video_play_actions_value,
-        video_play_actions._d_view as video_play_actions_d_view,
-        {% endif %}
-
-        {% if target.type =='snowflake' %}
-        website_ctr.VALUE:"1d_click"::VARCHAR as website_ctr_1d_click,
-        website_ctr.VALUE:"1d_view"::VARCHAR as website_ctr_1d_view,
-        website_ctr.VALUE:"7d_click"::VARCHAR as website_ctr_7d_click,
-        website_ctr.VALUE:"7d_view"::VARCHAR as website_ctr_7d_view,
-        website_ctr.VALUE:"28d_click"::VARCHAR as website_ctr_28d_click,
-        website_ctr.VALUE:"28d_view"::VARCHAR as website_ctr_28d_view,
-        website_ctr.VALUE:action_canvas_component_id::VARCHAR as website_ctr_action_canvas_component_id,
-        website_ctr.VALUE:action_canvas_component_name::VARCHAR as website_ctr_action_canvas_component_name,
-        website_ctr.VALUE:action_carousel_card_id::VARCHAR as website_ctr_action_carousel_card_id,
-        website_ctr.VALUE:action_carousel_card_name::VARCHAR as website_ctr_action_carousel_card_name,
-        website_ctr.VALUE:action_destination::VARCHAR as website_ctr_action_destination,
-        website_ctr.VALUE:action_device::VARCHAR as website_ctr_action_device,
-        website_ctr.VALUE:action_event_channel::VARCHAR as website_ctr_action_event_channel,
-        website_ctr.VALUE:action_link_click_destination::VARCHAR as website_ctr_action_link_click_destination,
-        website_ctr.VALUE:action_location_code::VARCHAR as website_ctr_action_location_code,
-        website_ctr.VALUE:action_reaction::VARCHAR as website_ctr_action_reaction,
-        website_ctr.VALUE:action_target_id::VARCHAR as website_ctr_action_target_id,
-        coalesce(website_ctr.VALUE:action_type::VARCHAR,'') as website_ctr_action_type,
-        website_ctr.VALUE:action_video_asset_id::VARCHAR as website_ctr_action_video_asset_id,
-        website_ctr.VALUE:action_video_sound::VARCHAR as website_ctr_action_video_sound,
-        website_ctr.VALUE:action_video_type::VARCHAR as website_ctr_action_video_type,
-        website_ctr.VALUE:inline::VARCHAR as website_ctr_inline,
-        website_ctr.VALUE:value::VARCHAR as website_ctr_value,
-        website_ctr.VALUE:id::VARCHAR as website_ctr_id,
-        {% else %}
-        website_ctr._daton_pre_1d_click as website_ctr_1d_click,
-        website_ctr._daton_pre_1d_view as website_ctr_1d_view,
-        website_ctr._daton_pre_7d_click as website_ctr_7d_click,
-        website_ctr._daton_pre_7d_view as website_ctr_7d_view,
-        website_ctr._daton_pre_28d_click as website_ctr_28d_click,
-        website_ctr._daton_pre_28d_view as website_ctr_28d_view,
-        website_ctr.action_canvas_component_id as website_ctr_action_canvas_component_id,
-        website_ctr.action_canvas_component_name as website_ctr_action_canvas_component_name,
-        website_ctr.action_carousel_card_id as website_ctr_action_carousel_card_id,
-        website_ctr.action_carousel_card_name as website_ctr_action_carousel_card_name,
-        website_ctr.action_destination as website_ctr_action_destination,
-        website_ctr.action_device as website_ctr_action_device,
-        website_ctr.action_event_channel as website_ctr_action_event_channel,
-        website_ctr.action_link_click_destination as website_ctr_action_link_click_destination,
-        website_ctr.action_location_code as website_ctr_action_location_code,
-        website_ctr.action_reaction as website_ctr_action_reaction,
-        website_ctr.action_target_id as website_ctr_action_target_id,
-        website_ctr.action_type as website_ctr_action_type,
-        website_ctr.action_video_asset_id as website_ctr_action_video_asset_id,
-        website_ctr.action_video_sound as website_ctr_action_video_sound,
-        website_ctr.action_video_type as website_ctr_action_video_type,
-        website_ctr.inline as website_ctr_inline,
-        website_ctr.value as website_ctr_value,
-        website_ctr.id as website_ctr_id,
-        {% endif %}
+        {{extract_nested_value("website_ctr","_daton_pre_1d_click","string")}} as website_ctr_1d_click,
+        {{extract_nested_value("website_ctr","_daton_pre_1d_view","string")}} as website_ctr_1d_view,
+        {{extract_nested_value("website_ctr","_daton_pre_28d_click","string")}} as website_ctr_28d_click,
+        {{extract_nested_value("website_ctr","_daton_pre_28d_view","string")}} as website_ctr_28d_view,
+        {{extract_nested_value("website_ctr","_daton_pre_7d_click","string")}} as website_ctr_7d_click,
+        {{extract_nested_value("website_ctr","_daton_pre_7d_view","string")}} as website_ctr_7d_view,
+        {{extract_nested_value("website_ctr","action_canvas_component_id","string")}} as website_ctr_action_canvas_component_id,
+        {{extract_nested_value("website_ctr","action_canvas_component_name","string")}} as website_ctr_action_canvas_component_name,
+        {{extract_nested_value("website_ctr","action_carousel_card_id","string")}} as website_ctr_action_carousel_card_id,
+        {{extract_nested_value("website_ctr","action_carousel_card_name","string")}} as website_ctr_action_carousel_card_name,
+        {{extract_nested_value("website_ctr","action_destination","string")}} as website_ctr_action_destination,
+        {{extract_nested_value("website_ctr","action_device","string")}} as website_ctr_action_device,
+        {{extract_nested_value("website_ctr","action_event_channel","string")}} as website_ctr_action_event_channel,
+        {{extract_nested_value("website_ctr","action_link_click_destination","string")}} as website_ctr_action_link_click_destination,
+        {{extract_nested_value("website_ctr","action_location_code","string")}} as website_ctr_action_location_code,
+        {{extract_nested_value("website_ctr","action_reaction","string")}} as website_ctr_action_reaction,
+        {{extract_nested_value("website_ctr","action_target_id","string")}} as website_ctr_action_target_id,
+        {{extract_nested_value("website_ctr","action_type","string")}} as website_ctr_action_type,
+        {{extract_nested_value("website_ctr","action_video_asset_id","string")}} as website_ctr_action_video_asset_id,
+        {{extract_nested_value("website_ctr","action_video_sound","string")}} as website_ctr_action_video_sound,
+        {{extract_nested_value("website_ctr","action_video_type","string")}} as website_ctr_action_video_type,
+        {{extract_nested_value("website_ctr","inline","string")}} as website_ctr_inline,
+        {{extract_nested_value("website_ctr","value","string")}} as website_ctr_value,
+        {{extract_nested_value("website_ctr","id","string")}} as website_ctr_id,
 
         {% if var('currency_conversion_flag') %}
             case when c.value is null then 1 else c.value end as exchange_currency_rate,
