@@ -21,4 +21,4 @@ edm_data_transformation:
       warehouse: COMPUTE_WH
       schema: EDM
       threads: 4
-  target: snowflake
+  target: bigquery

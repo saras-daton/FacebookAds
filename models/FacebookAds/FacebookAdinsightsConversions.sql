@@ -143,7 +143,6 @@ with fbadinsights as (
         {{daton_batch_id()}} as _daton_batch_id,
         current_timestamp() as _last_updated,
         '{{env_var("DBT_CLOUD_RUN_ID", "manual")}}' as _run_id,
-        {% if target.type =='snowflake' %}
         ROW_NUMBER() OVER (PARTITION BY ad_id,date_start,{{extract_nested_value("conversion","action_type","string")}} order by {{daton_batch_runtime()}} desc) row_num
         from {{i}}
             {{unnesting("conversion")}}
