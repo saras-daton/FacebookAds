@@ -121,7 +121,7 @@ with fbadinsights as (
         --cpm,
         --cpp,
         --ctr,
-        coalesce(CAST(date_start as DATE),'NA') date_start,
+        cast(coalesce(date_start,'NA')as Date) date_start,
         CAST(date_stop as DATE) date_stop,
         --estimated_ad_recall_rate,
         --estimated_ad_recallers,

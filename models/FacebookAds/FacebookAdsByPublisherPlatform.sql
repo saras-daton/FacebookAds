@@ -73,7 +73,7 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         buying_type,
         campaign_id,
         campaign_name,
-        CAST(clicks as INT64) as clicks
+        CAST(clicks as INT64) as clicks,
         cost_per_inline_link_click,
         cost_per_inline_post_engagement,
         cost_per_unique_click,
@@ -84,7 +84,7 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         cpm,
         cpp,
         ctr,
-        coalesce(CAST(date_start as DATE),'NA') date_start,
+        cast(coalesce(date_start,'NA')as Date) as date_start,
         CAST(date_stop as DATE) date_stop,
         frequency,
         CAST(impressions as INT64) as impressions,

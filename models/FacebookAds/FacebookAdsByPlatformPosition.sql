@@ -84,7 +84,7 @@ SELECT coalesce(MAX(_daton_batch_runtime) - 2592000000,0) FROM {{ this }}
         cpm,
         cpp,
         ctr,
-        CAST(date_start as DATE) date_start,
+        CAST(coalesce(date_start,'NA')as Date) date_start,
         CAST(date_stop as DATE) date_stop,
         frequency,
         CAST(impressions as INT64) as impressions,
