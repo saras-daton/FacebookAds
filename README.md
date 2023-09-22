@@ -24,7 +24,7 @@ As part of Data Unification, the following functions are performed:
 
 #### Prerequisites for Facebook Ads dbt package 
 Daton Integrations for  
-- Facebook Ads 
+- [Facebook Ads](https://sarasanalytics.com/daton/facebook-ads/) 
 - Exchange Rates(Optional, if currency conversion is not required)
 
 *Note:* 
