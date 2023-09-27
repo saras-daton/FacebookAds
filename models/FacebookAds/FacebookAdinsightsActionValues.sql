@@ -1,4 +1,4 @@
-{% if var('FacebookAdInsightsActionValues') %}
+{% if var('FacebookAdinsightsActionValues') %}
     {{ config( enabled = True ) }}
 {% else %}
     {{ config( enabled = False ) }}
