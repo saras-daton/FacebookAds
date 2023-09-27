@@ -94,7 +94,7 @@ with fbadinsights as (
         {{extract_nested_value("action_values","action_location_code","string")}} as action_values_action_location_code,
         {{extract_nested_value("action_values","action_reaction","string")}} as action_values_action_reaction,
         {{extract_nested_value("action_values","action_target_id","string")}} as action_values_action_target_id,
-        coalesce{{extract_nested_value("action_values","action_type","string")}},'NA') as action_values_action_type,
+        coalesce({{extract_nested_value("action_values","action_type","string")}},'NA') as action_values_action_type,
         {{extract_nested_value("action_values","action_video_asset_id","string")}} as action_values_action_video_asset_id,
         {{extract_nested_value("action_values","action_video_sound","string")}} as action_values_action_video_sound,
         {{extract_nested_value("action_values","action_video_type","string")}} as action_values_action_video_type,
