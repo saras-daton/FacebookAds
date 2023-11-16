@@ -2,7 +2,7 @@
 version: 2
 
 models:
-    - name: FacebookAds
+    - name: FacebookAd
       description: A report with Ad Insights
       config: 
         materialized: 'incremental'

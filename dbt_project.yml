@@ -45,8 +45,69 @@ vars:
   FacebookAdsByPublisherPlatform: True
   FacebookAdsByPlatformPosition: True
   FacebookCampaigns: True
-  FacebookAdcreatives: True
+  FacebookAdCreatives: True
+  FacebookAd: True
+
+  fbads_creatives_tbl_ptrn: '%facebookads%ad%creatives'
+  fbads_creatives_tbl_exclude_ptrn: ''
+  fbads_creatives_lookback: 2952000000
+
+  fbads_insights_tbl_ptrn: '%facebookads%ad%insights'
+  fbads_insights_tbl_exclude_ptrn: ''
+  fbads_insights_lookback: 2952000000
+
+  fbads_insights_actionvalues_tbl_ptrn: '%facebookads%adinsights'
+  fbads_insights_actionvalues_tbl_exclude_ptrn: ''
+  fbads_insights_actionvalues_lookback: 2952000000
+
+  fbads_insights_conversions_tbl_ptrn: '%facebookads%ad%insights'
+  fbads_insights_conversions_tbl_exclude_ptrn: ''
+  fbads_insights_conversions_lookback: 2952000000
+
+  fbads_insights_conversionvalues_tbl_ptrn: '%facebookads%ad%insights'
+  fbads_insights_conversionvalues_tbl_exclude_ptrn: ''
+  fbads_insights_conversionvalues_lookback: 2952000000
+
+  fbads_tbl_ptrn: '%facebookads%ads'
+  fbads_tbl_exclude_ptrn: ''
+  fbads_lookback: 2952000000
+
+  fbads_by_country_tbl_ptrn: '%facebookads%adinsights%country'
+  fbads_by_country_tbl_exclude_ptrn: ''
+  fbads_by_country_lookback: 2952000000
+
+  fbads_by_device_platform_tbl_ptrn: '%facebookads%adinsights%device%platform'
+  fbads_by_device_platform_tbl_exclude_ptrn: ''
+  fbads_by_device_platform_lookback: 2952000000
+
+  fbads_by_gender_tbl_ptrn: '%facebookads%adinsights%gender'
+  fbads_by_gender_tbl_exclude_ptrn: ''
+  fbads_by_gender_lookback: 2592000000
+
+  fbads_by_gender_age_tbl_ptrn: '%facebookads%adinsights%gender_age'
+  fbads_by_gender_age_tbl_exclude_ptrn: ''
+  fbads_by_gender_age_lookback: 2592000000
+
+  fbads_by_platform_position_tbl_ptrn: '%facebookads%adinsights%breakdown_publisher_platform_platform_position'
+  fbads_by_platform_position_tbl_exclude_ptrn: ''
+  fbads_by_platform_position_lookback: 2592000000
+
+  fbads_by_product_id_tbl_ptrn: '%facebookads%adinsights%product_id'
+  fbads_by_product_id_tbl_exclude_ptrn: ''
+  fbads_by_product_id_lookback: 2592000000
+
+  fbads_by_publisher_platform_tbl_ptrn: '%facebookads%adinsights%breakdown_publisher_platform'
+  fbads_by_publisher_platform_tbl_exclude_ptrn: ''
+  fbads_by_publisher_platform_lookback: 2592000000
+
+  fbads_by_region_tbl_ptrn: '%facebookads%adinsights%breakdown_region'
+  fbads_by_region_tbl_exclude_ptrn: ''
+  fbads_by_region_lookback: 2592000000
   
+  fbads_campaigns_tbl_ptrn: '%facebookads%campaigns'
+  fbads_campaigns_tbl_exclude_ptrn: ''
+  fbads_campaigns_lookback: 2592000000 
+
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
 # found in the "models/" directory. You probably won't need to change these!
