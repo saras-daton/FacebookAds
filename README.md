@@ -75,10 +75,8 @@ To enable timezone conversion, which converts the timezone columns from UTC time
 Example:
 ```yaml
 vars:
-timezone_conversion_flag: False
-raw_table_timezone_offset_hours: {
-    "Facebook.Ads.Brand_UK_Facebook_Adinsights":-7
-    }
+  timezone_conversion_flag: True
+  to_timezone: 'America/Los_Angeles'
 ```
 Here, -7 represents the offset hours between UTC and PDT considering we are sitting in PDT timezone and want the data in this timezone
 
@@ -129,7 +127,7 @@ models:
         incremental_strategy: 'merge'
         partition_by: { 'field': 'created_time', 'data_type': 'timestamp', 'granularity': 'day' }
         cluster_by: ['ad_id']
-        unique_key: ['ad_id']
+        unique_key: ['ad_id', 'account_id', 'campaign_id']
 
     - name: FacebookAdinsights
       description: A report with Ad Insights

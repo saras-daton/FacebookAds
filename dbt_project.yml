@@ -29,9 +29,6 @@ vars:
   currency_conversion_flag: True
   timezone_conversion_flag: True
   to_timezone: 'America/Los_Angeles'
-  raw_table_timezone_offset_hours: {
-    "Facebook.Ads.Brand_UK_Facebook_Adinsights":-7
-    }
 
   FacebookAdinsights: True
   FacebookAdinsightsActionValues: True
