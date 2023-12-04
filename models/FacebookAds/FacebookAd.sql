@@ -4,46 +4,29 @@
     {{ config( enabled = False ) }}
 {% endif %}
 
+{# /*--calling macro for tables list and remove exclude pattern */ #}
+{% set result =set_table_name("fbads_tbl_ptrn","fbads_tbl_exclude_ptrn") %}
+{# /*--iterating through all the tables */ #}
+{% for i in result %}
 
-{% set relations = dbt_utils.get_relations_by_pattern(
-schema_pattern=var('raw_schema'),
-table_pattern=var('fbads_tbl_ptrn'),
-exclude=var('fbads_tbl_exclude_ptrn'),
-database=var('raw_database')) %}
-
-{% for i in relations %}
-    {% if var('get_brandname_from_tablename_flag') %}
-        {% set brand =replace(i,'`','').split('.')[2].split('_')[var('brandname_position_in_tablename')] %}
-    {% else %}
-        {% set brand = var('default_brandname') %}
-    {% endif %}
-
-    {% if var('get_storename_from_tablename_flag') %}
-        {% set store =replace(i,'`','').split('.')[2].split('_')[var('storename_position_in_tablename')] %}
-    {% else %}
-        {% set store = var('default_storename') %}
-    {% endif %}
-
-    {% if var('timezone_conversion_flag') and i.lower() in tables_lowercase_list and i in var('raw_table_timezone_offset_hours')%}
-        {% set hr = var('raw_table_timezone_offset_hours')[i] %}
-    {% else %}
-        {% set hr = 0 %}
-    {% endif %}
-
-    select 
-        '{{brand}}' as brand,
-        '{{store}}' as store,
-        coalesce(a.id,'NA') as ad_id,
+        select 
+        {{ extract_brand_and_store_name_from_table(i, var('brandname_position_in_tablename'), var('get_brandname_from_tablename_flag'), var('default_brandname')) }} as brand,
+        {{ extract_brand_and_store_name_from_table(i, var('storename_position_in_tablename'), var('get_storename_from_tablename_flag'), var('default_storename')) }} as store,
+        a.id as ad_id,
         a.account_id,
         adset_id,
         bid_amount,
         campaign_id,
         configured_status,
-        CAST(a.created_time as timestamp) created_time,
+/*snowflake receives created_time as string becuase of which the timezzone conversion is not possible*/
+        {% if target.type == 'snowflake'%}
+        TO_TIMESTAMP_TZ(LEFT(created_time, 19),'YYYY-MM-DDTHH24:MI:SS') AS created_time,        
+        {%else%}
+        {{timezone_conversion('created_time')}} as created_time,
+        {%endif%}
         a.name,
         source_ad_id,
         a.status,
-
         {{extract_nested_value("creative","body","string")}} as creative_body,
         {{extract_nested_value("creative","image_url","string")}} as creative_image_url,
         {{extract_nested_value("creative","id","string")}} as creative_id,
@@ -80,10 +63,9 @@ database=var('raw_database')) %}
                 {{unnesting("creative")}}
                 {% if is_incremental() %}
                 {# /* -- this filter will only be applied on an incremental run */ #}
-                
-    WHERE a.{{daton_batch_runtime()}}  >= (select coalesce(max(_daton_batch_runtime) - {{ var('fbads_lookback') }},0) from {{ this }})
-        {% endif %}    
-        qualify DENSE_RANK() OVER (PARTITION BY a.id order by a.{{daton_batch_runtime()}} desc) = 1  
+                WHERE a.{{daton_batch_runtime()}}  >= (select coalesce(max(_daton_batch_runtime) - {{ var('fbads_lookback') }},0) from {{ this }})
+            {% endif %}    
+        qualify ROW_NUMBER() OVER (PARTITION BY ad_id, account_id, campaign_id order by a.{{daton_batch_runtime()}} desc) = 1  
 
 {% if not loop.last %} union all {% endif %}
 {% endfor %}   

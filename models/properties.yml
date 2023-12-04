@@ -7,7 +7,7 @@ models:
       config: 
         materialized: 'incremental'
         incremental_strategy: 'merge'
-        partition_by: { 'field': 'created_time', 'data_type': 'timestamp', 'granularity': 'day' }
+        partition_by: { 'field': 'created_time', 'data_type': 'datetime', 'granularity': 'day' }
         cluster_by: ['ad_id']
         unique_key: ['ad_id']
 
@@ -125,7 +125,7 @@ models:
         incremental_strategy: 'merge'
         partition_by: { 'field': 'date_start', 'data_type': 'date' }
         cluster_by: ['ad_id','region']
-        unique_key: ['ad_id','date_start','region','_seq_id']
+        unique_key: ['ad_id','date_start','region']
 
     - name: FacebookCampaigns
       description: A report with Campaign Details.
